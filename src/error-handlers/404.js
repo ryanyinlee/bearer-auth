@@ -1,9 +1,10 @@
 'use strict';
 
-function notFound(request, response, next) {
-    console.log('No route found for last request.');
-    response.status(404).send('aint nothin there');
-    next();
-}
-
-module.exports = notFound;
+module.exports = (req,res,next) => {
+  let error = { error: 'Resource Not Found' };
+  res.statusCode = 404;
+  res.statusMessage = 'Not Found';
+  res.setHeader('Content-Type', 'application/json');
+  res.write(JSON.stringify(error));
+  res.end();
+};

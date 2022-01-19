@@ -1,13 +1,10 @@
-`use strict`;
+'use strict';
 
-// for 500 level errors, not the user, or db fault
-// server errors
-
-function serverError(error, request, response, next) {
-    console.error('Server error.');
-    console.log(error);
-    response.status(500).send('Server is having an error.');
-    next();
-}
-
-module.exports = serverError;
+module.exports = (err, req, res, next) => {
+  let error = { error: err.message || err };
+  res.statusCode = err.status || 500;
+  res.statusMessage = err.statusMessage || 'Server Error';
+  res.setHeader('Content-Type', 'application/json');
+  res.write(JSON.stringify(error));
+  res.end();
+};
